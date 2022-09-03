@@ -1,0 +1,26 @@
+# sbt
+dist/*
+target/
+lib_managed/
+src_managed/
+project/boot/
+project/plugins/project/
+project/project/
+.history
+.cache
+.lib/
+.bsp/
+
+# intellij idea
+.idea
+
+# sigar
+native/
+
+# vscode
+.vscode
+
+# scalameta metals
+.bloop/
+.metals/
+metals.sbt
