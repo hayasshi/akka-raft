@@ -21,7 +21,7 @@ class SenderActor extends Actor with ActorLogging {
 
   val tcp: ActorRef = IO(Tcp)(context.system)
 
-  val connections = Map.empty[InetSocketAddress, ActorRef]
+  val connections = collection.mutable.Map.empty[InetSocketAddress, ActorRef]
 
   override def receive: Receive = {
     case AddRemote(remote) =>
@@ -53,7 +53,7 @@ class SenderActor extends Actor with ActorLogging {
         }
       }))
       connection ! Register(handler)
-      connections += (remote, handler)
+      connections.update(remote, handler)
   }
 }
 

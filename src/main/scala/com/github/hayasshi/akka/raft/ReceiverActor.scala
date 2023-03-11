@@ -14,7 +14,7 @@ class ReceiverActor(bindHost: String, bindPort: Int)
   val tcp: ActorRef = IO(Tcp)(context.system)
   tcp ! Bind(self, new InetSocketAddress(bindHost, bindPort))
 
-  var connections = Map.empty[ActorRef, InetSocketAddress]
+  val connections = collection.mutable.Map.empty[ActorRef, InetSocketAddress]
 
   override def receive: Receive = {
     case b @ Bound(_) =>
@@ -31,10 +31,10 @@ class ReceiverActor(bindHost: String, bindPort: Int)
         context.actorOf(Props(new ReceiverHandlerActor(remoteRef, remote)))
       context.watch(handler)
       remoteRef ! Register(handler)
-      connections += (handler, remote)
+      connections.update(handler, remote)
 
     case Terminated(ref) =>
-      connections.removed(ref)
+      connections.remove(ref)
   }
 }
 
